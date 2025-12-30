@@ -2,7 +2,7 @@ import React, { useState, useRef, useMemo } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { COMPANIES } from './constants';
-import { CompanyData, SimulationParams } from './types';
+import { SimulationParams } from './types';
 import { calculateMetrics, calculateRiskScore, formatCurrency, formatPercent } from './services/financialEngine';
 import { RevenueTrendChart, IncomeTrendChart, JawsOfDeathChart, KPIRadarChart } from './components/Charts';
 import VerdictBox from './components/VerdictBox';
@@ -15,8 +15,7 @@ import {
   AlertCircle,
   TrendingDown,
   Activity,
-  Layers,
-  Info
+  Layers
 } from 'lucide-react';
 
 const App: React.FC = () => {

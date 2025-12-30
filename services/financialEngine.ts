@@ -1,4 +1,4 @@
-import { CompanyData, CalculatedMetrics, RiskAnalysis, SimulationParams, FinancialYear } from '../types';
+import { CompanyData, CalculatedMetrics, RiskAnalysis, SimulationParams } from '../types';
 
 export const calculateMetrics = (company: CompanyData, params: SimulationParams): CalculatedMetrics => {
   const f2019 = company.financials[2019];
