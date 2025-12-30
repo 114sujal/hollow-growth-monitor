@@ -1,0 +1,5 @@
+{
+  "name": "Hollow Growth Monitor V3",
+  "description": "A professional financial forensics dashboard to detect hollow growth and growth traps in companies using the AGR vs SGR model.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,93 @@
+import React from 'react';
+import { CalculatedMetrics, RiskAnalysis } from '../types';
+import { AlertTriangle, TrendingUp, ShieldCheck, Search, Scale } from 'lucide-react';
+
+interface VerdictBoxProps {
+  risk: RiskAnalysis;
+  metrics: CalculatedMetrics;
+  mode: 'INVESTOR' | 'AUDITOR';
+}
+
+const VerdictBox: React.FC<VerdictBoxProps> = ({ risk, metrics, mode }) => {
+  const { riskLevel } = risk;
+  
+  const getInvestorVerdict = () => {
+    if (riskLevel === 'HIGH') {
+      return {
+        title: "🚨 GROWTH TRAP - Sell/Reduce",
+        desc: `AGR ${metrics.agr.toFixed(1)}% >> SGR ${metrics.sgr.toFixed(1)}% creates a ${metrics.hollowGap.toFixed(1)}% hollow gap. Growth is likely funded by debt or dilution rather than internal cash flows. Risk of dividend cuts or equity dilution is high.`,
+        borderColor: "border-red-500",
+        bgColor: "bg-red-500/10",
+        textColor: "text-red-400"
+      };
+    } else if (riskLevel === 'MODERATE') {
+      return {
+        title: "⚠️ MODERATE RISK - Hold & Monitor",
+        desc: `Small ${metrics.hollowGap.toFixed(1)}% hollow gap detected. Growth is largely sustainable but leverage may be creeping up. Monitor Q4 operating margins and receivable days closely.`,
+        borderColor: "border-amber-500",
+        bgColor: "bg-amber-500/10",
+        textColor: "text-amber-400"
+      };
+    } else {
+      return {
+        title: "✅ QUALITY GROWTH - Buy & Hold",
+        desc: `Sustainable growth! AGR ${metrics.agr.toFixed(1)}% is comfortably funded by SGR ${metrics.sgr.toFixed(1)}%. Excellent FCF/NI ratio of ${metrics.fcfToNetIncome.toFixed(2)}x indicates high earnings quality.`,
+        borderColor: "border-emerald-500",
+        bgColor: "bg-emerald-500/10",
+        textColor: "text-emerald-400"
+      };
+    }
+  };
+
+  const getAuditorVerdict = () => {
+    if (riskLevel === 'HIGH') {
+      return {
+        title: "🚨 HIGH FORENSIC RISK - Enhanced Audit",
+        desc: `Hollow gap > 4% triggers enhanced scrutiny. Recommended procedures: 1) Sample 40+ revenue transactions near period-end. 2) Detailed receivables aging analysis. 3) Scrutinize Capex capitalization policies. 4) Verify debt covenants.`,
+        borderColor: "border-red-500",
+        bgColor: "bg-red-500/10",
+        textColor: "text-red-400"
+      };
+    } else if (riskLevel === 'MODERATE') {
+      return {
+        title: "⚠️ MODERATE RISK - Additional Testing",
+        desc: `Focus on Revenue Recognition (ASC 606/Ind AS 115). Test 20 samples for cutoff accuracy. FCF/NI at ${metrics.fcfToNetIncome.toFixed(2)}x suggests minor accrual mismatches. Review working capital trends.`,
+        borderColor: "border-amber-500",
+        bgColor: "bg-amber-500/10",
+        textColor: "text-amber-400"
+      };
+    } else {
+      return {
+        title: "✅ LOW RISK - Standard Procedures",
+        desc: `High-quality earnings backed by cash flow (FCF/NI ${metrics.fcfToNetIncome.toFixed(2)}x). Analytical procedures and standard revenue cutoff testing likely sufficient. No material red flags in growth sustainability.`,
+        borderColor: "border-emerald-500",
+        bgColor: "bg-emerald-500/10",
+        textColor: "text-emerald-400"
+      };
+    }
+  };
+
+  const content = mode === 'INVESTOR' ? getInvestorVerdict() : getAuditorVerdict();
+
+  return (
+    <div className={`rounded-xl border-l-4 ${content.borderColor} ${content.bgColor} p-6 shadow-lg transition-all duration-300`}>
+      <div className="flex items-start justify-between mb-3">
+        <div className="flex items-center gap-3">
+           {mode === 'INVESTOR' ? <TrendingUp className={content.textColor} size={28} /> : <Search className={content.textColor} size={28} />}
+           <div>
+             <h3 className={`text-xl font-bold ${content.textColor} tracking-tight`}>{content.title}</h3>
+             <p className="text-xs uppercase tracking-wider text-slate-400 mt-1 font-semibold">{mode} PERSPECTIVE</p>
+           </div>
+        </div>
+        <div className={`px-3 py-1 rounded-full text-xs font-bold border ${content.borderColor} ${content.textColor} bg-slate-900/50`}>
+          SCORE: {risk.totalScore.toFixed(0)}/100
+        </div>
+      </div>
+      <p className="text-slate-300 leading-relaxed text-sm border-t border-slate-700/50 pt-3">
+        {content.desc}
+      </p>
+    </div>
+  );
+};
+
+export default VerdictBox;
